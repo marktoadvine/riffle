@@ -9,7 +9,8 @@
   ],
   "files": [
     "dist",
-    "src"
+    "src",
+    "types"
   ],
   "main": "./dist/riffle.cjs",
   "module": "./dist/riffle.js",
@@ -20,7 +21,10 @@
       "import": "./dist/riffle.js",
       "require": "./dist/riffle.cjs"
     },
-    "./styles.css": "./dist/riffle.css",
+    "./styles.css": {
+      "types": "./types/styles.css.d.ts",
+      "default": "./dist/riffle.css"
+    },
     "./package.json": "./package.json"
   },
   "keywords": [

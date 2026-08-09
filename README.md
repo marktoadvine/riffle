@@ -16,6 +16,14 @@ there is not a single brand color in the source.
 npm install github:marktoadvine/riffle
 ```
 
+It is not on npm. Installing from GitHub builds the package on the way in, so the install is slower
+than a registry install and pulls the build tooling with it. Pin to a tag when you want upgrades to be
+deliberate rather than tracking whatever is on `main`:
+
+```sh
+npm install github:marktoadvine/riffle#v0.1.0
+```
+
 React 18 or 19 is a peer dependency. There are no runtime dependencies.
 
 ```tsx
