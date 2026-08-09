@@ -1,5 +1,5 @@
 {
-  "name": "riffle",
+  "name": "@marktoadvine/riffle",
   "version": "0.1.0",
   "description": "An accessible card stack carousel for React. Layered cards you can advance, or unstack into a grid.",
   "license": "MIT",
@@ -42,6 +42,7 @@
   "scripts": {
     "dev": "vite --config demo/vite.config.ts",
     "build": "vite build && tsc -p tsconfig.build.json",
+    "prepare": "npm run build",
     "build:demo": "vite build --config demo/vite.config.ts",
     "preview:demo": "vite preview --config demo/vite.config.ts",
     "typecheck": "tsc --noEmit",

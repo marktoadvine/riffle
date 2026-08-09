@@ -1,5 +1,5 @@
 import { useState, type CSSProperties } from 'react';
-import { CardStack } from 'riffle';
+import { CardStack } from '@marktoadvine/riffle';
 
 const vars = (style: Record<string, string | number>) => style as CSSProperties;
 

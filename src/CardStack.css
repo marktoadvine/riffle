@@ -358,8 +358,15 @@
   line-height: 1.3;
 }
 
+/*
+ * text-decoration is set explicitly rather than left to the browser default,
+ * because CSS resets that normalise anchors (Tailwind's Preflight among them)
+ * strip it. Since these links inherit their color from the card, losing the
+ * underline would leave nothing at all marking them as links.
+ */
 .rf-card a {
   color: inherit;
+  text-decoration: underline;
   text-underline-offset: 0.18em;
 }
 
