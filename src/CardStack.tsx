@@ -43,6 +43,33 @@ const prefersReducedMotion = () =>
 
 const vars = (style: Record<string, string | number>) => style as CSSProperties;
 
+/**
+ * Below this relative luminance a face is dark enough that light text reads
+ * better than dark. It is the standard crossover point between black and
+ * white text.
+ */
+const DARK_FACE = 0.18;
+
+/**
+ * WCAG relative luminance of a browser-resolved color. Input comes from
+ * getComputedStyle, so it is always `rgb(r, g, b)` or `rgba(r, g, b, a)`
+ * whatever syntax the consumer wrote. Returns null when the color is too
+ * transparent to judge, since then it is the page showing through, not the
+ * card.
+ */
+const faceLuminance = (color: string): number | null => {
+  const parts = color.match(/[\d.]+/g);
+  if (!parts || parts.length < 3) return null;
+  const [r, g, b, a = '1'] = parts.map(Number) as [number, number, number, number?];
+  if (Number(a) < 0.5) return null;
+
+  const channel = (value: number) => {
+    const c = value / 255;
+    return c <= 0.03928 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4;
+  };
+  return 0.2126 * channel(r) + 0.7152 * channel(g) + 0.0722 * channel(b);
+};
+
 const cx = (...parts: Array<string | false | undefined>) => parts.filter(Boolean).join(' ');
 
 /* ------------------------------------------------------------------ icons */
@@ -278,6 +305,20 @@ function CardStackRoot({
       el.toggleAttribute('inert', !expanded && i !== topIndex);
     });
   }, [count, expanded, readCards, topIndex]);
+
+  /*
+   * Card text follows the card. An accent dark enough to swallow --rf-ink gets
+   * --rf-ink-inverse instead. The face is read back from the DOM rather than
+   * parsed off the `accent` prop, which is what makes this work for every
+   * color syntax rather than just hex.
+   */
+  const accentKey = items.map((item) => (item.props as CardProps)?.accent ?? '').join('|');
+  useIsoLayoutEffect(() => {
+    for (const el of readCards()) {
+      const luminance = faceLuminance(getComputedStyle(el).backgroundColor);
+      el.toggleAttribute('data-rf-dark', luminance !== null && luminance < DARK_FACE);
+    }
+  }, [accentKey, readCards]);
 
   /* ------------------------------------------------------------- input */
 

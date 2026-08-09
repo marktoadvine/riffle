@@ -4,13 +4,18 @@
  * Every visual value below comes from an --rf- custom property, so the whole
  * component can be rethemed without touching this file. The defaults are
  * deliberately neutral. There are no brand colors here.
+ *
+ * Defaults live on :root rather than on .rf-root so that setting a token on
+ * an ancestor, or on :root itself, actually reaches the component. A token
+ * declared on .rf-root would beat any inherited value and quietly ignore it.
  */
 
-.rf-root {
+:root {
   /* Color */
   --rf-paper: #fafaf9;
   --rf-surface: #ffffff;
   --rf-ink: #18181b;
+  --rf-ink-inverse: #fafaf9;
   --rf-muted: #71717a;
   --rf-focus: #2563eb;
 
@@ -22,8 +27,8 @@
 
   /* Stacking */
   --rf-offset: 10px;
-  --rf-tilt: 2deg;
-  --rf-scale-step: 0.02;
+  --rf-tilt: 5deg;
+  --rf-scale-step: 0;
 
   /* Motion */
   --rf-duration: 420ms;
@@ -32,8 +37,8 @@
   --rf-hover-lift: -6px;
   --rf-hover-scale: 1.012;
   --rf-press-scale: 0.985;
-  --rf-fan-offset: 3px;
-  --rf-fan-tilt: 0.5deg;
+  --rf-fan-offset: 5px;
+  --rf-fan-tilt: 1deg;
 
   /* Elevation */
   --rf-shadow: 0 10px 30px -14px rgb(24 24 27 / 30%);
@@ -64,8 +69,14 @@
   /* Focus */
   --rf-focus-width: 2px;
   --rf-focus-offset: 3px;
+}
 
-  /* Derived. Not intended as a theming hook. */
+.rf-root {
+  /*
+   * Derived, not a theming hook. It stays on .rf-root rather than :root
+   * because a custom property resolves the var() inside it where it is
+   * declared, so declaring it here lets an overridden --rf-offset feed it.
+   */
   --rf-bleed: calc(var(--rf-offset) * 3);
 
   container-type: inline-size;
@@ -161,6 +172,7 @@
   padding: var(--rf-card-padding);
   border-radius: var(--rf-radius);
   background-color: var(--rf-accent, var(--rf-surface));
+  color: var(--rf-ink);
   box-shadow: var(--rf-shadow);
   transform: translateY(
       calc(var(--rf-offset) * var(--rf-depth) + var(--rf-lift-y) + var(--rf-fan-y))
@@ -175,10 +187,13 @@
     opacity var(--rf-duration) var(--rf-ease);
 }
 
-/* The front card of a stack shows the neutral surface. Every other card, and
-   every card once the deck is unstacked, shows its own accent. */
-.rf-stack:not([data-expanded='true']) .rf-card[data-front='true'] {
-  background-color: var(--rf-surface);
+/*
+ * Set by the component after measuring the card's resolved background: a card
+ * whose face is too dark for --rf-ink switches to the inverse. An attribute
+ * rather than an inline property, so consumer CSS can still take it back.
+ */
+.rf-card[data-rf-dark] {
+  color: var(--rf-ink-inverse);
 }
 
 /* Cards deeper than `peek` are still in the DOM and still measurable, but
@@ -425,13 +440,6 @@
     box-shadow: none;
     border: 1px solid var(--rf-muted);
     break-inside: avoid;
-  }
-
-  /* On paper the deck is a grid, so the front card is no longer special and
-     keeps its own accent like every other card. Selector matches the rule it
-     overrides so source order decides. */
-  .rf-stack:not([data-expanded='true']) .rf-card[data-front='true'] {
-    background-color: var(--rf-accent, var(--rf-surface));
   }
 
   .rf-arrow,
