@@ -1,7 +1,7 @@
 # riffle
 
 An accessible card stack carousel for React. A layered deck where the front card sits straight on and
-the cards behind it lean slightly so their colored edges show at the sides and along the bottom.
+the cards behind it lean so their colored edges show past the sides, the top, and the bottom.
 Advance it by clicking, by the arrows, by keyboard, or by swipe, or unstack the whole deck into a
 grid to read every card at once.
 
@@ -102,25 +102,31 @@ text to the bottom. Skip the classes entirely if you want your own typography.
 
 ### `CardStack.Card`
 
-| Prop        | Type        | Default | Description                                                                                                                      |
-| ----------- | ----------- | ------- | -------------------------------------------------------------------------------------------------------------------------------- |
-| `accent`    | `string`    |         | Face color for this card whenever it is not the front card of the stack, and for every card in the expanded grid. Any CSS color. |
-| `children`  | `ReactNode` |         | Arbitrary card content.                                                                                                          |
-| `className` | `string`    |         | Appended to the card element's class list.                                                                                       |
+| Prop        | Type        | Default | Description                                                                                                              |
+| ----------- | ----------- | ------- | ------------------------------------------------------------------------------------------------------------------------ |
+| `accent`    | `string`    |         | Face color for this card, in every state: behind the stack, at the front of it, and in the expanded grid. Any CSS color. |
+| `children`  | `ReactNode` |         | Arbitrary card content.                                                                                                  |
+| `className` | `string`    |         | Appended to the card element's class list.                                                                               |
 
 `accent` is written to the card as `--rf-accent`, which is what the stylesheet reads to paint the
 face. A card with no `accent` falls back to `--rf-surface`, so an all-neutral deck is the default.
+Card text follows the face automatically, so a dark accent is safe. See
+[Accessibility](#accessibility).
 
 ## Custom properties
 
-Set any of these on `.rf-root`, on an ancestor, or on `:root`. Every visual value in the component
-comes from this table.
+Every visual value in the component comes from this table. The defaults are declared on `:root`, so
+you can override them from anywhere that reaches the component: on `:root`, on any ancestor, on the
+`className` you pass, or inline. A rule that targets `.rf-root` directly ties with the library's own
+selector, in which case stylesheet order decides, so prefer something more specific like
+`.my-page .rf-root` if you go that route.
 
 | Property                      | Default                                 | What it does                                 |
 | ----------------------------- | --------------------------------------- | -------------------------------------------- |
 | `--rf-paper`                  | `#fafaf9`                               | Background behind the deck                   |
-| `--rf-surface`                | `#ffffff`                               | Face of the front card while stacked         |
+| `--rf-surface`                | `#ffffff`                               | Face of a card that has no `accent`          |
 | `--rf-ink`                    | `#18181b`                               | Text, arrow borders, arrow glyphs            |
+| `--rf-ink-inverse`            | `#fafaf9`                               | Text on a card too dark for `--rf-ink`       |
 | `--rf-muted`                  | `#71717a`                               | Expand toggle in its resting state           |
 | `--rf-focus`                  | `#2563eb`                               | Focus ring color                             |
 | `--rf-radius`                 | `44px`                                  | Card corner radius                           |
@@ -128,16 +134,16 @@ comes from this table.
 | `--rf-aspect`                 | `1 / 1.04`                              | Card aspect ratio, in both layouts           |
 | `--rf-card-padding`           | `8%`                                    | Card inner padding                           |
 | `--rf-offset`                 | `10px`                                  | Vertical offset added per depth step         |
-| `--rf-tilt`                   | `2deg`                                  | Lean of the two cards behind the front one   |
-| `--rf-scale-step`             | `0.02`                                  | Scale removed per depth step                 |
+| `--rf-tilt`                   | `5deg`                                  | Lean of the two cards behind the front one   |
+| `--rf-scale-step`             | `0`                                     | Scale removed per depth step                 |
 | `--rf-duration`               | `420ms`                                 | Transform, shadow, and opacity transition    |
 | `--rf-ease`                   | `cubic-bezier(0.22, 1, 0.36, 1)`        | Easing for the same                          |
 | `--rf-press-duration`         | `120ms`                                 | Press state and control transitions          |
 | `--rf-hover-lift`             | `-6px`                                  | How far the front card rises on hover        |
 | `--rf-hover-scale`            | `1.012`                                 | How much it grows on hover                   |
 | `--rf-press-scale`            | `0.985`                                 | Scale while the stack is held down           |
-| `--rf-fan-offset`             | `3px`                                   | Extra offset the back cards fan out on hover |
-| `--rf-fan-tilt`               | `0.5deg`                                | Extra lean they fan out on hover             |
+| `--rf-fan-offset`             | `5px`                                   | Extra offset the back cards fan out on hover |
+| `--rf-fan-tilt`               | `1deg`                                  | Extra lean they fan out on hover             |
 | `--rf-shadow`                 | `0 10px 30px -14px rgb(24 24 27 / 30%)` | Card shadow at rest                          |
 | `--rf-shadow-lift`            | `0 22px 46px -18px rgb(24 24 27 / 38%)` | Card shadow while lifted                     |
 | `--rf-arrow-size`             | `24px`                                  | Diameter of the arrow buttons                |
@@ -193,6 +199,14 @@ bearing rather than cosmetic.
   hidden `aria-live="polite"` region announces "Showing card 2 of 4" when the front card changes and
   "Showing all 4 cards" when the deck unstacks. This keeps the visual design clean without leaving
   screen reader users with no feedback at all.
+- **Card text follows the card.** Because a card keeps its accent even at the front of the stack, a
+  dark accent would otherwise leave unreadable text on the one card the reader is looking at. After
+  each render the component measures every card's resolved background, and any face too dark for
+  `--rf-ink` gets `data-rf-dark` and switches to `--rf-ink-inverse`. The background is read back out
+  of the DOM rather than parsed off the prop, so it works for any color syntax, including named
+  colors, `hsl()`, and `oklch()`. Cards with a mostly transparent face are left on `--rf-ink`, on
+  the assumption that the paper behind them is showing through. Consumer CSS can still override the
+  result, since the switch is an attribute rather than an inline style.
 - **Why expand mode exists.** A stack is a fundamentally lossy way to present a set: to read card
   seven you have to advance past six others, and if you use a screen reader you have to do it without
   the visual cue that there is more behind. Unstacking into a grid makes every card live at once,
@@ -216,8 +230,10 @@ bearing rather than cosmetic.
   instantly, and the hover lift is dropped.
 - Printing always renders the expanded grid, so a printed page contains every card.
 
-One thing to check on your side: `accent` colors are your own, and card text uses `--rf-ink`. Pick
-accents light enough to keep that text readable, or override `--rf-ink` on the cards that need it.
+One thing left on your side: the automatic ink switch picks whichever of your two ink tokens reads
+better, but it cannot invent contrast that neither provides. A mid-tone accent can still land short
+of 4.5:1 against both. Check your accents against `--rf-ink` and `--rf-ink-inverse`, and adjust the
+accent or the tokens if neither clears the bar.
 
 ## Browser support
 
