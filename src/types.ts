@@ -64,8 +64,9 @@ export interface CardStackProps {
 
 export interface CardProps {
   /**
-   * Face color for this card whenever it is not the front card of the stack,
-   * and for every card in the expanded grid. Any CSS color.
+   * Face color for this card, in every state: behind the stack, at the front
+   * of it, and in the expanded grid. Any CSS color. Text on the card switches
+   * to `--rf-ink-inverse` on its own when this is dark enough to need it.
    */
   accent?: string;
   /** Arbitrary card content. */

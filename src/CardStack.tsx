@@ -60,8 +60,8 @@ const DARK_FACE = 0.18;
 const faceLuminance = (color: string): number | null => {
   const parts = color.match(/[\d.]+/g);
   if (!parts || parts.length < 3) return null;
-  const [r, g, b, a = '1'] = parts.map(Number) as [number, number, number, number?];
-  if (Number(a) < 0.5) return null;
+  const [r, g, b, alpha = 1] = parts.map(Number) as [number, number, number, number?];
+  if (alpha < 0.5) return null;
 
   const channel = (value: number) => {
     const c = value / 255;
@@ -312,7 +312,7 @@ function CardStackRoot({
    * parsed off the `accent` prop, which is what makes this work for every
    * color syntax rather than just hex.
    */
-  const accentKey = items.map((item) => (item.props as CardProps)?.accent ?? '').join('|');
+  const accentKey = items.map((item) => item.props.accent ?? '').join('|');
   useIsoLayoutEffect(() => {
     for (const el of readCards()) {
       const luminance = faceLuminance(getComputedStyle(el).backgroundColor);
@@ -461,7 +461,7 @@ function CardStackRoot({
           {items.map((item, i) => {
             const isCard = item.type === Card;
             const props: CardProps = isCard ? item.props : {};
-            const depth = count > 0 ? (i - topIndex + count) % count : 0;
+            const depth = (i - topIndex + count) % count;
             const isFront = depth === 0;
 
             return (
@@ -472,7 +472,6 @@ function CardStackRoot({
                 data-rf-index={i}
                 data-depth={depth}
                 data-front={isFront || undefined}
-                data-current={i === topIndex || undefined}
                 data-hidden={(!expanded && depth > peek) || undefined}
                 aria-roledescription="slide"
                 aria-label={`${i + 1} of ${count}`}
