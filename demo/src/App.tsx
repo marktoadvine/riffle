@@ -3,6 +3,14 @@ import { CardStack } from 'riffle';
 
 const vars = (style: Record<string, string | number>) => style as CSSProperties;
 
+/* --------------------------------------------------------------- palette */
+
+const ASH = '#B7C6B8';
+const CHIFFON = '#FFFAD2';
+const JUNGLE = '#12A01C';
+const GRAPHITE = '#34312D';
+const PLATINUM = '#F3F3F4';
+
 /* ------------------------------------------------------------------ data */
 
 const neutral = [
@@ -10,25 +18,25 @@ const neutral = [
     index: '#1',
     title: 'Front and center',
     body: 'The card in focus sits straight on. The rest wait behind it.',
-    accent: '#E7E5E4',
+    accent: PLATINUM,
   },
   {
     index: '#2',
     title: 'One at a time',
     body: 'Click the stack, swipe it, or use the arrows to bring the next card forward.',
-    accent: '#D6D3D1',
+    accent: ASH,
   },
   {
     index: '#3',
     title: 'Nothing buried',
     body: 'Unstack the deck and every card is readable at once.',
-    accent: '#C2BFBC',
+    accent: PLATINUM,
   },
   {
     index: '#4',
     title: 'Yours to theme',
     body: 'Every value is a custom property, so the deck takes your colors.',
-    accent: '#A8A29E',
+    accent: ASH,
   },
 ];
 
@@ -36,77 +44,78 @@ const themed = [
   {
     index: '#1',
     title: 'Set an accent',
-    body: 'Each card carries one color, shown whenever it is not the front card.',
-    accent: '#8AB4DC',
+    body: 'Each card carries one color and keeps it wherever it sits in the deck.',
+    accent: ASH,
   },
   {
     index: '#2',
     title: 'Edges do the work',
-    body: 'Two cards lean opposite ways so their color shows at the sides.',
-    accent: '#E9A567',
+    body: 'Two cards lean opposite ways so their color shows past the sides and the top.',
+    accent: CHIFFON,
   },
   {
     index: '#3',
     title: 'Depth, not decoration',
     body: 'The card behind those two sits square and shows along the bottom.',
-    accent: '#8FB8A0',
+    accent: JUNGLE,
   },
   {
     index: '#4',
-    title: 'Still neutral inside',
-    body: 'The front face stays on the surface token, whichever card is showing.',
-    accent: '#C89BB0',
+    title: 'Text follows the face',
+    body: 'A card this dark switches to the inverse ink on its own.',
+    accent: GRAPHITE,
   },
 ];
 
 const many = [
-  {
-    index: '#1',
-    title: 'Eight cards',
-    body: 'More than a stack can usefully show.',
-    accent: '#8AB4DC',
-  },
+  { index: '#1', title: 'Nine cards', body: 'More than a stack can usefully show.', accent: ASH },
   {
     index: '#2',
     title: 'Three deep',
     body: 'Peek keeps only three behind the front one.',
-    accent: '#E9A567',
+    accent: CHIFFON,
   },
   {
     index: '#3',
     title: 'The rest wait',
     body: 'Deeper cards fade out and stop taking clicks.',
-    accent: '#8FB8A0',
+    accent: JUNGLE,
   },
   {
     index: '#4',
     title: 'Still in the DOM',
     body: 'Nothing is unmounted, so nothing restarts.',
-    accent: '#C89BB0',
+    accent: GRAPHITE,
   },
   {
     index: '#5',
     title: 'Unstack it',
-    body: 'The grid is the only way to see all eight.',
-    accent: '#B7A8D0',
+    body: 'The grid is the only way to see all nine.',
+    accent: PLATINUM,
   },
   {
     index: '#6',
     title: 'Pick one',
     body: 'Click a card in the grid to make it the front card.',
-    accent: '#E3C88A',
+    accent: ASH,
   },
   {
     index: '#7',
     title: 'Or press Escape',
     body: 'That collapses without changing the position.',
-    accent: '#8FBCC0',
+    accent: CHIFFON,
   },
   {
     index: '#8',
     title: 'Print it',
     body: 'Printed pages always render the full grid.',
-    accent: '#D69C9C',
+    accent: JUNGLE,
+  },
+  {
+    index: '#9',
+    title: 'Read it aloud',
+    body: 'A live region announces every move instead of dots.',
+    accent: GRAPHITE,
   },
 ];
 
@@ -215,7 +224,7 @@ export function App() {
 
       <section className="section">
         <CardStack label="Card stack with links">
-          <CardStack.Card accent="#8AB4DC">
+          <CardStack.Card accent={ASH}>
             <span className="rf-index">#1</span>
             <div>
               <h2 className="rf-title">Links stay links</h2>
@@ -225,7 +234,7 @@ export function App() {
               </p>
             </div>
           </CardStack.Card>
-          <CardStack.Card accent="#E9A567">
+          <CardStack.Card accent={CHIFFON}>
             <span className="rf-index">#2</span>
             <div>
               <h2 className="rf-title">Tab reaches one card</h2>
@@ -235,7 +244,7 @@ export function App() {
               </p>
             </div>
           </CardStack.Card>
-          <CardStack.Card accent="#8FB8A0">
+          <CardStack.Card accent={GRAPHITE}>
             <span className="rf-index">#3</span>
             <div>
               <h2 className="rf-title">Every card, live</h2>
@@ -248,7 +257,7 @@ export function App() {
       </section>
 
       <section className="section">
-        <CardStack label="Eight card stack">
+        <CardStack label="Nine card stack">
           {many.map((card) => (
             <CardStack.Card key={card.index} accent={card.accent}>
               <span className="rf-index">{card.index}</span>

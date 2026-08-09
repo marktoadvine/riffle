@@ -1,10 +1,30 @@
 /* Deliberately bare. The component is the only thing on the page. */
 
 :root {
-  --paper: #fafaf9;
-  --ink: #18181b;
-  --muted: #71717a;
-  --hairline: #e4e4e7;
+  /* Palette. Lives here in the demo, never in the library. */
+  --ash-grey: #b7c6b8;
+  --lemon-chiffon: #fffad2;
+  --medium-jungle: #12a01c;
+  --graphite: #34312d;
+  --platinum: #f3f3f4;
+
+  --paper: var(--platinum);
+  --ink: var(--graphite);
+  --muted: #6f6b65;
+  --hairline: #d9d9db;
+}
+
+/*
+ * Retheme the component. A plain `.rf-root` rule would tie on specificity with
+ * the library's own, so the outcome would depend on stylesheet order. The
+ * descendant selector settles it either way.
+ */
+.page .rf-root {
+  --rf-paper: var(--paper);
+  --rf-ink: #1b1a17;
+  --rf-ink-inverse: var(--platinum);
+  --rf-muted: var(--muted);
+  --rf-focus: #1f6f26;
 }
 
 * {
