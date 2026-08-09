@@ -13,19 +13,33 @@ there is not a single brand color in the source.
 ## Install
 
 ```sh
-npm install riffle
+npm install @marktoadvine/riffle
 ```
 
 React 18 or 19 is a peer dependency. There are no runtime dependencies.
 
 ```tsx
-import { CardStack } from 'riffle';
-import 'riffle/styles.css';
+import { CardStack } from '@marktoadvine/riffle';
+import '@marktoadvine/riffle/styles.css';
 ```
 
 The stylesheet is a separate file because the library build extracts it out of the JavaScript bundle.
 Import it once, anywhere in your app. The package marks CSS as having side effects, so bundlers will
 not drop it.
+
+The component's rules are unlayered, which means they beat anything in a cascade layer. If you use
+Tailwind or another utility framework and want its utilities to win, import the stylesheet into a
+layer of your own:
+
+```css
+@import '@marktoadvine/riffle/styles.css' layer(riffle);
+```
+
+That works in Tailwind v4 natively and in v3 through `postcss-import`. Without it, a utility class on
+a card cannot override a property the component already sets.
+
+The component is client-side, and `CardStack` carries a `'use client'` directive, so it can be
+imported directly into a React Server Components tree.
 
 ### Or copy and paste
 

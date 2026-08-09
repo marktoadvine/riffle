@@ -11,7 +11,7 @@ export default defineConfig({
   plugins: [react()],
   resolve: {
     alias: {
-      riffle: resolve(root, 'src/index.ts'),
+      '@marktoadvine/riffle': resolve(root, 'src/index.ts'),
     },
   },
   build: {

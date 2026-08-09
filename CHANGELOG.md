@@ -33,6 +33,10 @@ First release.
   reach the component. No brand colors in the source.
 - Optional `.rf-index`, `.rf-title`, and `.rf-body` utilities sized in container query units.
 - `prefers-reduced-motion` support and an `@media print` rule that always renders the full grid.
+- Published as `@marktoadvine/riffle`. The unscoped name belongs to an unrelated package.
+- Ships a `'use client'` directive on the built entry points, so it can be imported from a React
+  Server Components tree.
+- Ships `src/` alongside `dist/`, so the bundled sourcemaps and declaration maps resolve.
 - Demo site and a GitHub Actions workflow that deploys it to GitHub Pages.
 
 [0.1.0]: https://github.com/marktoadvine/riffle/releases/tag/v0.1.0
