@@ -13,7 +13,7 @@ there is not a single brand color in the source.
 ## Install
 
 ```sh
-npm install @marktoadvine/riffle
+npm install github:marktoadvine/riffle
 ```
 
 React 18 or 19 is a peer dependency. There are no runtime dependencies.
