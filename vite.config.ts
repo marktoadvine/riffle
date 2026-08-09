@@ -11,7 +11,7 @@ export default defineConfig({
       name: 'Riffle',
       formats: ['es', 'cjs'],
       fileName: (format) => (format === 'es' ? 'riffle.js' : 'riffle.cjs'),
-                cssFileName: 'riffle',
+      cssFileName: 'riffle',
     },
     rollupOptions: {
       external: ['react', 'react-dom', 'react/jsx-runtime'],

@@ -8,7 +8,7 @@ export default tseslint.config(
   { ignores: ['dist', 'dist-demo', 'node_modules', 'coverage'] },
   js.configs.recommended,
   ...tseslint.configs.recommended,
-  reactHooks.configs['recommended-latest'],
+  reactHooks.configs.flat['recommended-latest'],
   prettier,
   {
     files: ['**/*.{ts,tsx}'],
