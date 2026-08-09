@@ -3,7 +3,7 @@
 An accessible card stack carousel for React. A layered deck where the front card sits straight on and
 the cards behind it lean so their colored edges show past the sides, the top, and the bottom.
 Advance it by clicking, by the arrows, by keyboard, or by swipe, or unstack the whole deck into a
-grid to read every card at once (my favorite part! See [Accessibility](#accessibility) for more.
+grid to read every card at once (my favorite part!) See [Accessibility](#accessibility) for more.
 
 Brand agnostic by construction: every value you are likely to theme is a CSS custom property, and
 there is not a single brand color in the source.
