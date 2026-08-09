@@ -19,6 +19,8 @@ First release.
   dark for `--rf-ink` switches to `--rf-ink-inverse` through a `data-rf-dark` attribute.
 - Advance by clicking the stack, by the prev and next arrows, by ArrowLeft, ArrowRight, Home, and
   End, or by horizontal swipe. Clicks that originate on an interactive descendant are left alone.
+- Springy motion. `--rf-ease` overshoots and settles, with `--rf-ease-soft` for color, shadow,
+  opacity, and the press state, which should not bounce.
 - Expand mode: unstack the deck into a responsive grid, animated with FLIP and no animation library.
   Clicking a card in the grid collapses back onto it, and Escape collapses in place.
 - Accessibility: `role="group"` with `aria-roledescription="carousel"`, per-card slide labels,

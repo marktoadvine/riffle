@@ -2,16 +2,16 @@
 
 :root {
   /* Palette. Lives here in the demo, never in the library. */
-  --ash-grey: #b7c6b8;
-  --lemon-chiffon: #fffad2;
-  --medium-jungle: #12a01c;
-  --graphite: #34312d;
-  --platinum: #f3f3f4;
+  --white: #ffffff;
+  --mist: #f4f4f5;
+  --stone: #e7e5e4;
+  --ash: #d6d3d1;
+  --royal: #3b5bdb;
 
-  --paper: var(--platinum);
-  --ink: var(--graphite);
-  --muted: #6f6b65;
-  --hairline: #d9d9db;
+  --paper: #fafaf9;
+  --ink: #18181b;
+  --muted: #71717a;
+  --hairline: #e4e4e7;
 }
 
 /*
@@ -21,10 +21,10 @@
  */
 .page .rf-root {
   --rf-paper: var(--paper);
-  --rf-ink: #1b1a17;
-  --rf-ink-inverse: var(--platinum);
+  --rf-ink: var(--ink);
+  --rf-ink-inverse: var(--white);
   --rf-muted: var(--muted);
-  --rf-focus: #1f6f26;
+  --rf-focus: var(--royal);
 }
 
 * {

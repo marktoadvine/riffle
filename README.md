@@ -136,8 +136,9 @@ selector, in which case stylesheet order decides, so prefer something more speci
 | `--rf-offset`                 | `10px`                                  | Vertical offset added per depth step         |
 | `--rf-tilt`                   | `5deg`                                  | Lean of the two cards behind the front one   |
 | `--rf-scale-step`             | `0`                                     | Scale removed per depth step                 |
-| `--rf-duration`               | `420ms`                                 | Transform, shadow, and opacity transition    |
-| `--rf-ease`                   | `cubic-bezier(0.22, 1, 0.36, 1)`        | Easing for the same                          |
+| `--rf-duration`               | `460ms`                                 | Transform, shadow, and opacity transition    |
+| `--rf-ease`                   | `cubic-bezier(0.34, 1.7, 0.5, 1)`       | Transform easing. Overshoots, then settles   |
+| `--rf-ease-soft`              | `cubic-bezier(0.22, 1, 0.36, 1)`        | Easing for anything that must not overshoot  |
 | `--rf-press-duration`         | `120ms`                                 | Press state and control transitions          |
 | `--rf-hover-lift`             | `-6px`                                  | How far the front card rises on hover        |
 | `--rf-hover-scale`            | `1.012`                                 | How much it grows on hover                   |
@@ -226,6 +227,10 @@ bearing rather than cosmetic.
   a 44px corner radius is never clipped.
 - Swipe uses pointer events with a 40px horizontal threshold and ignores gestures that travel further
   vertically than horizontally, so vertical page scrolling is untouched.
+- Motion springs rather than glides: `--rf-ease` overshoots its target and settles back, so a card
+  arriving at the front swings about 14% past its resting angle before coming to rest. Color,
+  shadow, opacity, and the 120ms press use `--rf-ease-soft` instead, since an overshoot there
+  reads as a wobble rather than a spring.
 - Under `prefers-reduced-motion: reduce` the stack-to-grid transition is skipped, layouts swap
   instantly, and the hover lift is dropped.
 - Printing always renders the expanded grid, so a printed page contains every card.

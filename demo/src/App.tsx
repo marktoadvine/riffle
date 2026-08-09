@@ -5,11 +5,11 @@ const vars = (style: Record<string, string | number>) => style as CSSProperties;
 
 /* --------------------------------------------------------------- palette */
 
-const ASH = '#B7C6B8';
-const CHIFFON = '#FFFAD2';
-const JUNGLE = '#12A01C';
-const GRAPHITE = '#34312D';
-const PLATINUM = '#F3F3F4';
+const WHITE = '#FFFFFF';
+const MIST = '#F4F4F5';
+const STONE = '#E7E5E4';
+const ASH = '#D6D3D1';
+const ROYAL = '#3B5BDB';
 
 /* ------------------------------------------------------------------ data */
 
@@ -18,7 +18,7 @@ const neutral = [
     index: '#1',
     title: 'Front and center',
     body: 'The card in focus sits straight on. The rest wait behind it.',
-    accent: PLATINUM,
+    accent: WHITE,
   },
   {
     index: '#2',
@@ -30,13 +30,13 @@ const neutral = [
     index: '#3',
     title: 'Nothing buried',
     body: 'Unstack the deck and every card is readable at once.',
-    accent: PLATINUM,
+    accent: MIST,
   },
   {
     index: '#4',
     title: 'Yours to theme',
     body: 'Every value is a custom property, so the deck takes your colors.',
-    accent: ASH,
+    accent: STONE,
   },
 ];
 
@@ -45,77 +45,77 @@ const themed = [
     index: '#1',
     title: 'Set an accent',
     body: 'Each card carries one color and keeps it wherever it sits in the deck.',
-    accent: ASH,
+    accent: MIST,
   },
   {
     index: '#2',
     title: 'Edges do the work',
     body: 'Two cards lean opposite ways so their color shows past the sides and the top.',
-    accent: CHIFFON,
+    accent: STONE,
   },
   {
     index: '#3',
     title: 'Depth, not decoration',
     body: 'The card behind those two sits square and shows along the bottom.',
-    accent: JUNGLE,
+    accent: ASH,
   },
   {
     index: '#4',
     title: 'Text follows the face',
-    body: 'A card this dark switches to the inverse ink on its own.',
-    accent: GRAPHITE,
+    body: 'One accent card, dark enough that it switches to the inverse ink on its own.',
+    accent: ROYAL,
   },
 ];
 
 const many = [
-  { index: '#1', title: 'Nine cards', body: 'More than a stack can usefully show.', accent: ASH },
+  { index: '#1', title: 'Nine cards', body: 'More than a stack can usefully show.', accent: WHITE },
   {
     index: '#2',
     title: 'Three deep',
     body: 'Peek keeps only three behind the front one.',
-    accent: CHIFFON,
+    accent: MIST,
   },
   {
     index: '#3',
     title: 'The rest wait',
     body: 'Deeper cards fade out and stop taking clicks.',
-    accent: JUNGLE,
+    accent: STONE,
   },
   {
     index: '#4',
     title: 'Still in the DOM',
     body: 'Nothing is unmounted, so nothing restarts.',
-    accent: GRAPHITE,
+    accent: ROYAL,
   },
   {
     index: '#5',
     title: 'Unstack it',
     body: 'The grid is the only way to see all nine.',
-    accent: PLATINUM,
+    accent: ASH,
   },
   {
     index: '#6',
     title: 'Pick one',
     body: 'Click a card in the grid to make it the front card.',
-    accent: ASH,
+    accent: WHITE,
   },
   {
     index: '#7',
     title: 'Or press Escape',
     body: 'That collapses without changing the position.',
-    accent: CHIFFON,
+    accent: MIST,
   },
   {
     index: '#8',
     title: 'Print it',
     body: 'Printed pages always render the full grid.',
-    accent: JUNGLE,
+    accent: STONE,
   },
   {
     index: '#9',
     title: 'Read it aloud',
     body: 'A live region announces every move instead of dots.',
-    accent: GRAPHITE,
+    accent: ROYAL,
   },
 ];
 
@@ -224,7 +224,7 @@ export function App() {
 
       <section className="section">
         <CardStack label="Card stack with links">
-          <CardStack.Card accent={ASH}>
+          <CardStack.Card accent={WHITE}>
             <span className="rf-index">#1</span>
             <div>
               <h2 className="rf-title">Links stay links</h2>
@@ -234,7 +234,7 @@ export function App() {
               </p>
             </div>
           </CardStack.Card>
-          <CardStack.Card accent={CHIFFON}>
+          <CardStack.Card accent={STONE}>
             <span className="rf-index">#2</span>
             <div>
               <h2 className="rf-title">Tab reaches one card</h2>
@@ -244,7 +244,7 @@ export function App() {
               </p>
             </div>
           </CardStack.Card>
-          <CardStack.Card accent={GRAPHITE}>
+          <CardStack.Card accent={ROYAL}>
             <span className="rf-index">#3</span>
             <div>
               <h2 className="rf-title">Every card, live</h2>

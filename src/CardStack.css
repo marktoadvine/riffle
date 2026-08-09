@@ -31,8 +31,11 @@
   --rf-scale-step: 0;
 
   /* Motion */
-  --rf-duration: 420ms;
-  --rf-ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --rf-duration: 460ms;
+  /* Overshoots its target and settles back, which is what gives the deck its
+     spring. Anything that should not overshoot uses --rf-ease-soft. */
+  --rf-ease: cubic-bezier(0.34, 1.7, 0.5, 1);
+  --rf-ease-soft: cubic-bezier(0.22, 1, 0.36, 1);
   --rf-press-duration: 120ms;
   --rf-hover-lift: -6px;
   --rf-hover-scale: 1.012;
@@ -183,8 +186,8 @@
     );
   transition:
     transform var(--rf-duration) var(--rf-ease),
-    box-shadow var(--rf-duration) var(--rf-ease),
-    opacity var(--rf-duration) var(--rf-ease);
+    box-shadow var(--rf-duration) var(--rf-ease-soft),
+    opacity var(--rf-duration) var(--rf-ease-soft);
 }
 
 /*
@@ -222,7 +225,9 @@
   --rf-lift-y: 0px;
   --rf-lift-scale: 1;
 
+  /* No spring on the press. At 120ms an overshoot reads as a wobble. */
   transition-duration: var(--rf-press-duration);
+  transition-timing-function: var(--rf-ease-soft);
 }
 
 /* ------------------------------------------------------------ expanded */
@@ -267,9 +272,9 @@
   color: var(--rf-ink);
   cursor: pointer;
   transition:
-    background-color var(--rf-press-duration) var(--rf-ease),
-    color var(--rf-press-duration) var(--rf-ease),
-    opacity var(--rf-press-duration) var(--rf-ease);
+    background-color var(--rf-press-duration) var(--rf-ease-soft),
+    color var(--rf-press-duration) var(--rf-ease-soft),
+    opacity var(--rf-press-duration) var(--rf-ease-soft);
 }
 
 .rf-arrow[data-direction='next'] {
@@ -311,8 +316,8 @@
   line-height: 1;
   cursor: pointer;
   transition:
-    color var(--rf-press-duration) var(--rf-ease),
-    border-color var(--rf-press-duration) var(--rf-ease);
+    color var(--rf-press-duration) var(--rf-ease-soft),
+    border-color var(--rf-press-duration) var(--rf-ease-soft);
 }
 
 .rf-toggle:hover {
