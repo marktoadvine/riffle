@@ -422,7 +422,6 @@ function CardStackRoot({
             const props: CardProps = isCard ? item.props : {};
             const depth = count > 0 ? (i - topIndex + count) % count : 0;
             const isFront = depth === 0;
-            const face = !expanded && isFront ? 'var(--rf-surface)' : props.accent;
 
             return (
               <div
@@ -440,7 +439,7 @@ function CardStackRoot({
                 style={vars({
                   '--rf-depth': depth,
                   '--rf-tilt-sign': TILT_SIGN[Math.min(depth, TILT_SIGN.length - 1)] ?? 0,
-                  ...(face ? { '--rf-card-face': face } : null),
+                  ...(props.accent ? { '--rf-accent': props.accent } : null),
                   zIndex: count - depth,
                 })}
               >

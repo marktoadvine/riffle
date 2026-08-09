@@ -160,7 +160,7 @@
   justify-content: space-between;
   padding: var(--rf-card-padding);
   border-radius: var(--rf-radius);
-  background-color: var(--rf-card-face, var(--rf-surface));
+  background-color: var(--rf-accent, var(--rf-surface));
   box-shadow: var(--rf-shadow);
   transform: translateY(
       calc(var(--rf-offset) * var(--rf-depth) + var(--rf-lift-y) + var(--rf-fan-y))
@@ -173,6 +173,12 @@
     transform var(--rf-duration) var(--rf-ease),
     box-shadow var(--rf-duration) var(--rf-ease),
     opacity var(--rf-duration) var(--rf-ease);
+}
+
+/* The front card of a stack shows the neutral surface. Every other card, and
+   every card once the deck is unstacked, shows its own accent. */
+.rf-stack:not([data-expanded='true']) .rf-card[data-front='true'] {
+  background-color: var(--rf-surface);
 }
 
 /* Cards deeper than `peek` are still in the DOM and still measurable, but
@@ -412,11 +418,20 @@
   .rf-stack .rf-card {
     position: static;
     aspect-ratio: var(--rf-aspect);
+    /* No transition, so the printed snapshot never catches a card mid-fade. */
+    transition: none;
     transform: none;
     opacity: 1;
     box-shadow: none;
     border: 1px solid var(--rf-muted);
     break-inside: avoid;
+  }
+
+  /* On paper the deck is a grid, so the front card is no longer special and
+     keeps its own accent like every other card. Selector matches the rule it
+     overrides so source order decides. */
+  .rf-stack:not([data-expanded='true']) .rf-card[data-front='true'] {
+    background-color: var(--rf-accent, var(--rf-surface));
   }
 
   .rf-arrow,
