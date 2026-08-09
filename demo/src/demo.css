@@ -1,0 +1,121 @@
+/* Deliberately bare. The component is the only thing on the page. */
+
+:root {
+  /* Palette. Lives here in the demo, never in the library. */
+  --white: #ffffff;
+  --mist: #f4f4f5;
+  --stone: #e7e5e4;
+  --ash: #d6d3d1;
+  --royal: #3b5bdb;
+
+  --paper: #fafaf9;
+  --ink: #18181b;
+  --muted: #71717a;
+  --hairline: #e4e4e7;
+}
+
+/*
+ * Retheme the component. A plain `.rf-root` rule would tie on specificity with
+ * the library's own, so the outcome would depend on stylesheet order. The
+ * descendant selector settles it either way.
+ */
+.page .rf-root {
+  --rf-paper: var(--paper);
+  --rf-ink: var(--ink);
+  --rf-ink-inverse: var(--white);
+  --rf-muted: var(--muted);
+  --rf-focus: var(--royal);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family:
+    'Inter Variable',
+    'Inter',
+    ui-sans-serif,
+    system-ui,
+    -apple-system,
+    'Segoe UI',
+    Roboto,
+    Helvetica,
+    Arial,
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+.page {
+  display: flex;
+  flex-direction: column;
+  gap: 120px;
+  max-width: 1040px;
+  margin: 0 auto;
+  padding: 96px 24px 160px;
+}
+
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+}
+
+.tokens {
+  display: contents;
+}
+
+/* --------------------------------------------------------------- panel */
+
+.panel {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 12px 28px;
+  padding: 16px 20px;
+  border: 1px solid var(--hairline);
+  border-radius: 12px;
+  font-size: 13px;
+  color: var(--muted);
+}
+
+.control {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-variant-numeric: tabular-nums;
+}
+
+.control--check {
+  gap: 8px;
+}
+
+.control input[type='range'] {
+  width: 108px;
+  accent-color: var(--ink);
+}
+
+.control input[type='checkbox'] {
+  accent-color: var(--ink);
+}
+
+.control output {
+  min-width: 5ch;
+  color: var(--ink);
+}
+
+@media print {
+  .panel {
+    display: none;
+  }
+
+  .page {
+    gap: 32px;
+    padding: 0;
+  }
+}

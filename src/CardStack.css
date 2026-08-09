@@ -1,0 +1,454 @@
+/*
+ * riffle: CardStack
+ *
+ * Every visual value below comes from an --rf- custom property, so the whole
+ * component can be rethemed without touching this file. The defaults are
+ * deliberately neutral. There are no brand colors here.
+ *
+ * Defaults live on :root rather than on .rf-root so that setting a token on
+ * an ancestor, or on :root itself, actually reaches the component. A token
+ * declared on .rf-root would beat any inherited value and quietly ignore it.
+ */
+
+:root {
+  /* Color */
+  --rf-paper: #fafaf9;
+  --rf-surface: #ffffff;
+  --rf-ink: #18181b;
+  --rf-ink-inverse: #fafaf9;
+  --rf-muted: #71717a;
+  --rf-focus: #2563eb;
+
+  /* Shape */
+  --rf-radius: 44px;
+  --rf-width: clamp(280px, 84vw, 440px);
+  --rf-aspect: 1 / 1.04;
+  --rf-card-padding: 8%;
+
+  /* Stacking */
+  --rf-offset: 10px;
+  --rf-tilt: 5deg;
+  --rf-scale-step: 0;
+
+  /* Motion */
+  --rf-duration: 460ms;
+  /* Overshoots its target and settles back, which is what gives the deck its
+     spring. Anything that should not overshoot uses --rf-ease-soft. */
+  --rf-ease: cubic-bezier(0.34, 1.7, 0.5, 1);
+  --rf-ease-soft: cubic-bezier(0.22, 1, 0.36, 1);
+  --rf-press-duration: 120ms;
+  --rf-hover-lift: -6px;
+  --rf-hover-scale: 1.012;
+  --rf-press-scale: 0.985;
+  --rf-fan-offset: 5px;
+  --rf-fan-tilt: 1deg;
+
+  /* Elevation */
+  --rf-shadow: 0 10px 30px -14px rgb(24 24 27 / 30%);
+  --rf-shadow-lift: 0 22px 46px -18px rgb(24 24 27 / 38%);
+
+  /* Controls */
+  --rf-arrow-size: 24px;
+  --rf-arrow-gap: 20px;
+  --rf-arrow-border: 1px;
+  --rf-arrow-disabled-opacity: 0.32;
+  --rf-arrow-row-gap: 24px;
+  --rf-icon-size: 16px;
+  --rf-toggle-gap: 8px;
+  --rf-toggle-size: 14px;
+
+  /* Grid (expanded) */
+  --rf-grid-gap: 16px;
+  --rf-grid-min: 240px;
+
+  /* Type */
+  --rf-font:
+    'Inter Variable', 'Inter', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto,
+    Helvetica, Arial, sans-serif;
+  --rf-index-size: 18cqw;
+  --rf-title-size: 8.5cqw;
+  --rf-body-size: 6.5cqw;
+
+  /* Focus */
+  --rf-focus-width: 2px;
+  --rf-focus-offset: 3px;
+}
+
+.rf-root {
+  /*
+   * Derived, not a theming hook. It stays on .rf-root rather than :root
+   * because a custom property resolves the var() inside it where it is
+   * declared, so declaring it here lets an overridden --rf-offset feed it.
+   */
+  --rf-bleed: calc(var(--rf-offset) * 3);
+
+  container-type: inline-size;
+  container-name: rf-root;
+  position: relative;
+  box-sizing: border-box;
+  background-color: var(--rf-paper);
+  color: var(--rf-ink);
+  font-family: var(--rf-font);
+}
+
+.rf-root *,
+.rf-root *::before,
+.rf-root *::after {
+  box-sizing: border-box;
+}
+
+/* ---------------------------------------------------------------- layout */
+
+.rf-viewport {
+  display: grid;
+  grid-template-areas: 'prev stack next';
+  grid-template-columns: auto auto auto;
+  align-items: center;
+  justify-content: center;
+  column-gap: var(--rf-arrow-gap);
+  padding-block-end: var(--rf-bleed);
+}
+
+.rf-root[data-expanded='true'] .rf-viewport {
+  grid-template-areas: 'stack';
+  grid-template-columns: minmax(0, 1fr);
+  padding-block-end: 0;
+}
+
+/*
+ * Under 560px there is no room to flank the stack, so the arrows move to a
+ * centered row beneath it. This is a container query rather than a media
+ * query so a narrow column in a wide viewport behaves correctly too.
+ */
+@container rf-root (max-width: 559.98px) {
+  .rf-viewport {
+    /* The 1fr gutters keep the pair of arrows together in the middle instead
+       of letting the stack's width push them apart. */
+    grid-template-areas:
+      'stack stack stack stack'
+      '.     prev  next  .';
+    grid-template-columns: 1fr auto auto 1fr;
+    column-gap: var(--rf-arrow-gap);
+    row-gap: calc(var(--rf-bleed) + var(--rf-arrow-row-gap));
+    padding-block-end: 0;
+  }
+}
+
+.rf-stack {
+  grid-area: stack;
+  container-type: inline-size;
+  container-name: rf-stack;
+  position: relative;
+  width: var(--rf-width);
+  max-width: 100%;
+  aspect-ratio: var(--rf-aspect);
+  margin-inline: auto;
+  touch-action: pan-y;
+  cursor: pointer;
+}
+
+.rf-actions {
+  display: flex;
+  justify-content: center;
+  gap: var(--rf-arrow-gap);
+  padding-block-start: var(--rf-arrow-row-gap);
+}
+
+/* ----------------------------------------------------------------- cards */
+
+.rf-card {
+  --rf-depth: 0;
+  --rf-tilt-sign: 0;
+  --rf-lift-y: 0px;
+  --rf-lift-scale: 1;
+  --rf-fan-y: 0px;
+  --rf-fan-on: 0;
+  --rf-press: 1;
+
+  container-type: inline-size;
+  container-name: rf-card;
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: var(--rf-card-padding);
+  border-radius: var(--rf-radius);
+  background-color: var(--rf-accent, var(--rf-surface));
+  color: var(--rf-ink);
+  box-shadow: var(--rf-shadow);
+  transform: translateY(
+      calc(var(--rf-offset) * var(--rf-depth) + var(--rf-lift-y) + var(--rf-fan-y))
+    )
+    rotate(calc(var(--rf-tilt-sign) * (var(--rf-tilt) + var(--rf-fan-tilt) * var(--rf-fan-on))))
+    scale(
+      calc((1 - var(--rf-scale-step) * var(--rf-depth)) * var(--rf-lift-scale) * var(--rf-press))
+    );
+  transition:
+    transform var(--rf-duration) var(--rf-ease),
+    box-shadow var(--rf-duration) var(--rf-ease-soft),
+    opacity var(--rf-duration) var(--rf-ease-soft);
+}
+
+/*
+ * Set by the component after measuring the card's resolved background: a card
+ * whose face is too dark for --rf-ink switches to the inverse. An attribute
+ * rather than an inline property, so consumer CSS can still take it back.
+ */
+.rf-card[data-rf-dark] {
+  color: var(--rf-ink-inverse);
+}
+
+/* Cards deeper than `peek` are still in the DOM and still measurable, but
+   they are neither visible nor clickable. */
+.rf-card[data-hidden='true'] {
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* --------------------------------------------------------- stacked hover */
+
+.rf-root:not([data-expanded='true']):hover .rf-card[data-front='true'] {
+  --rf-lift-y: var(--rf-hover-lift);
+  --rf-lift-scale: var(--rf-hover-scale);
+
+  box-shadow: var(--rf-shadow-lift);
+}
+
+.rf-root:not([data-expanded='true']):hover .rf-card:not([data-front='true']) {
+  --rf-fan-y: var(--rf-fan-offset);
+  --rf-fan-on: 1;
+}
+
+.rf-root:not([data-expanded='true']) .rf-stack:active .rf-card[data-front='true'] {
+  --rf-press: var(--rf-press-scale);
+  --rf-lift-y: 0px;
+  --rf-lift-scale: 1;
+
+  /* No spring on the press. At 120ms an overshoot reads as a wobble. */
+  transition-duration: var(--rf-press-duration);
+  transition-timing-function: var(--rf-ease-soft);
+}
+
+/* ------------------------------------------------------------ expanded */
+
+.rf-stack[data-expanded='true'] {
+  width: 100%;
+  max-width: none;
+  aspect-ratio: auto;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(var(--rf-grid-min), 1fr));
+  gap: var(--rf-grid-gap);
+  cursor: default;
+}
+
+.rf-stack[data-expanded='true'] .rf-card {
+  position: static;
+  aspect-ratio: var(--rf-aspect);
+  transform: none;
+  opacity: 1;
+  pointer-events: auto;
+  cursor: pointer;
+}
+
+.rf-stack[data-expanded='true'] .rf-card:hover {
+  transform: translateY(var(--rf-hover-lift));
+  box-shadow: var(--rf-shadow-lift);
+}
+
+/* -------------------------------------------------------------- controls */
+
+.rf-arrow {
+  grid-area: prev;
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: var(--rf-arrow-size);
+  height: var(--rf-arrow-size);
+  padding: 0;
+  border: var(--rf-arrow-border) solid var(--rf-ink);
+  border-radius: 50%;
+  background: transparent;
+  color: var(--rf-ink);
+  cursor: pointer;
+  transition:
+    background-color var(--rf-press-duration) var(--rf-ease-soft),
+    color var(--rf-press-duration) var(--rf-ease-soft),
+    opacity var(--rf-press-duration) var(--rf-ease-soft);
+}
+
+.rf-arrow[data-direction='next'] {
+  grid-area: next;
+}
+
+/* An invisible 44px target so the small visual circle is still comfortable
+   to hit on touch. */
+.rf-arrow::before {
+  content: '';
+  position: absolute;
+  inset: 50%;
+  width: 44px;
+  height: 44px;
+  translate: -50% -50%;
+}
+
+.rf-arrow:hover:not(:disabled) {
+  background-color: var(--rf-ink);
+  color: var(--rf-paper);
+}
+
+.rf-arrow:disabled {
+  opacity: var(--rf-arrow-disabled-opacity);
+  cursor: default;
+}
+
+.rf-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--rf-toggle-gap);
+  padding: 6px 12px;
+  border: var(--rf-arrow-border) solid transparent;
+  border-radius: 999px;
+  background: transparent;
+  color: var(--rf-muted);
+  font: inherit;
+  font-size: var(--rf-toggle-size);
+  line-height: 1;
+  cursor: pointer;
+  transition:
+    color var(--rf-press-duration) var(--rf-ease-soft),
+    border-color var(--rf-press-duration) var(--rf-ease-soft);
+}
+
+.rf-toggle:hover {
+  border-color: currentcolor;
+  color: var(--rf-ink);
+}
+
+.rf-icon {
+  display: block;
+  flex: none;
+  width: var(--rf-icon-size);
+  height: var(--rf-icon-size);
+  fill: currentcolor;
+}
+
+/* ----------------------------------------------------------------- type */
+
+.rf-index {
+  display: block;
+  font-size: var(--rf-index-size);
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: -0.03em;
+}
+
+.rf-title {
+  margin: 0 0 0.35em;
+  font-size: var(--rf-title-size);
+  font-weight: 600;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+}
+
+.rf-body {
+  margin: 0;
+  font-size: var(--rf-body-size);
+  font-weight: 400;
+  line-height: 1.3;
+}
+
+.rf-card a {
+  color: inherit;
+  text-underline-offset: 0.18em;
+}
+
+/* ---------------------------------------------------------------- a11y */
+
+/*
+ * Focus rings are never clipped: nothing in the component uses
+ * overflow: hidden, so a ring on a link inside a card stays fully visible
+ * even though the card has a large corner radius.
+ */
+.rf-root:focus-visible,
+.rf-arrow:focus-visible,
+.rf-toggle:focus-visible,
+.rf-card :focus-visible {
+  outline: var(--rf-focus-width) solid var(--rf-focus);
+  outline-offset: var(--rf-focus-offset);
+}
+
+.rf-live {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  border: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  clip-path: inset(50%);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .rf-card,
+  .rf-arrow,
+  .rf-toggle {
+    transition-duration: 1ms;
+  }
+
+  .rf-root:not([data-expanded='true']):hover .rf-card[data-front='true'],
+  .rf-root:not([data-expanded='true']):hover .rf-card:not([data-front='true']),
+  .rf-stack[data-expanded='true'] .rf-card:hover {
+    --rf-lift-y: 0px;
+    --rf-lift-scale: 1;
+    --rf-fan-y: 0px;
+    --rf-fan-on: 0;
+
+    transform: none;
+  }
+
+  .rf-root:not([data-expanded='true']):hover .rf-card[data-front='true'] {
+    transform: translateY(calc(var(--rf-offset) * var(--rf-depth)))
+      rotate(calc(var(--rf-tilt-sign) * var(--rf-tilt)))
+      scale(calc(1 - var(--rf-scale-step) * var(--rf-depth)));
+  }
+}
+
+/*
+ * Printed pages get every card, laid out as the expanded grid, because a
+ * stack on paper is a single card with some colored edges.
+ */
+@media print {
+  .rf-viewport {
+    grid-template-areas: 'stack';
+    grid-template-columns: minmax(0, 1fr);
+    padding-block-end: 0;
+  }
+
+  .rf-stack {
+    width: 100%;
+    max-width: none;
+    aspect-ratio: auto;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(var(--rf-grid-min), 1fr));
+    gap: var(--rf-grid-gap);
+  }
+
+  .rf-stack .rf-card {
+    position: static;
+    aspect-ratio: var(--rf-aspect);
+    /* No transition, so the printed snapshot never catches a card mid-fade. */
+    transition: none;
+    transform: none;
+    opacity: 1;
+    box-shadow: none;
+    border: 1px solid var(--rf-muted);
+    break-inside: avoid;
+  }
+
+  .rf-arrow,
+  .rf-toggle {
+    display: none;
+  }
+}

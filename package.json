@@ -1,0 +1,81 @@
+{
+  "name": "riffle",
+  "version": "0.1.0",
+  "description": "An accessible card stack carousel for React. Layered cards you can advance, or unstack into a grid.",
+  "license": "MIT",
+  "type": "module",
+  "sideEffects": [
+    "**/*.css"
+  ],
+  "files": [
+    "dist"
+  ],
+  "main": "./dist/riffle.cjs",
+  "module": "./dist/riffle.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/riffle.js",
+      "require": "./dist/riffle.cjs"
+    },
+    "./styles.css": "./dist/riffle.css",
+    "./package.json": "./package.json"
+  },
+  "keywords": [
+    "react",
+    "carousel",
+    "card-stack",
+    "accessibility",
+    "a11y",
+    "component"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/marktoadvine/riffle.git"
+  },
+  "homepage": "https://marktoadvine.github.io/riffle/",
+  "bugs": {
+    "url": "https://github.com/marktoadvine/riffle/issues"
+  },
+  "scripts": {
+    "dev": "vite --config demo/vite.config.ts",
+    "build": "vite build && tsc -p tsconfig.build.json",
+    "build:demo": "vite build --config demo/vite.config.ts",
+    "preview:demo": "vite preview --config demo/vite.config.ts",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint .",
+    "format": "prettier --write .",
+    "format:check": "prettier --check ."
+  },
+  "peerDependencies": {
+    "@fontsource-variable/inter": ">=5",
+    "react": "^18.2.0 || ^19.0.0"
+  },
+  "peerDependenciesMeta": {
+    "@fontsource-variable/inter": {
+      "optional": true
+    }
+  },
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "@fontsource-variable/inter": "^5.3.0",
+    "@types/node": "^22.20.1",
+    "@types/react": "^19.2.18",
+    "@types/react-dom": "^19.2.4",
+    "@vitejs/plugin-react": "^6.0.5",
+    "eslint": "^10.8.1",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-react-hooks": "^7.1.1",
+    "globals": "^17.9.0",
+    "prettier": "^3.9.6",
+    "react": "^19.2.8",
+    "react-dom": "^19.2.8",
+    "typescript": "~5.9.3",
+    "typescript-eslint": "^8.66.0",
+    "vite": "^8.2.1"
+  },
+  "engines": {
+    "node": ">=20.19"
+  }
+}
