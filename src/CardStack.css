@@ -108,11 +108,12 @@
  */
 @container rf-root (max-width: 559.98px) {
   .rf-viewport {
+    /* The 1fr gutters keep the pair of arrows together in the middle instead
+       of letting the stack's width push them apart. */
     grid-template-areas:
-      'stack stack'
-      'prev next';
-    grid-template-columns: auto auto;
-    justify-items: center;
+      'stack stack stack stack'
+      '.     prev  next  .';
+    grid-template-columns: 1fr auto auto 1fr;
     column-gap: var(--rf-arrow-gap);
     row-gap: calc(var(--rf-bleed) + var(--rf-arrow-row-gap));
     padding-block-end: 0;
