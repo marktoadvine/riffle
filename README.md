@@ -108,7 +108,8 @@ text to the bottom. Skip the classes entirely if you want your own typography.
 | `children`  | `ReactNode` |         | Arbitrary card content.                                                                                                          |
 | `className` | `string`    |         | Appended to the card element's class list.                                                                                       |
 
-A card with no `accent` falls back to `--rf-surface`, so an all-neutral deck is the default.
+`accent` is written to the card as `--rf-accent`, which is what the stylesheet reads to paint the
+face. A card with no `accent` falls back to `--rf-surface`, so an all-neutral deck is the default.
 
 ## Custom properties
 
