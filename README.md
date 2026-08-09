@@ -5,8 +5,8 @@ the cards behind it lean so their colored edges show past the sides, the top, an
 Advance it by clicking, by the arrows, by keyboard, or by swipe, or unstack the whole deck into a
 grid to read every card at once.
 
-Brand agnostic by construction: every visual value is a CSS custom property, and there is not a
-single brand color in the source.
+Brand agnostic by construction: every value you are likely to theme is a CSS custom property, and
+there is not a single brand color in the source.
 
 [Live demo](https://marktoadvine.github.io/riffle/)
 
@@ -23,8 +23,9 @@ import { CardStack } from 'riffle';
 import 'riffle/styles.css';
 ```
 
-The stylesheet ships separately so bundlers can tree-shake it correctly. Import it once, anywhere in
-your app.
+The stylesheet is a separate file because the library build extracts it out of the JavaScript bundle.
+Import it once, anywhere in your app. The package marks CSS as having side effects, so bundlers will
+not drop it.
 
 ### Or copy and paste
 
@@ -115,7 +116,8 @@ Card text follows the face automatically, so a dark accent is safe. See
 
 ## Custom properties
 
-Every visual value in the component comes from this table. The defaults are declared on `:root`, so
+Everything you are likely to want to theme comes from this table. A few structural literals stay in
+the stylesheet, noted below it. The defaults are declared on `:root`, so
 you can override them from anywhere that reaches the component: on `:root`, on any ancestor, on the
 `className` you pass, or inline. A rule that targets `.rf-root` directly ties with the library's own
 selector, in which case stylesheet order decides, so prefer something more specific like
@@ -164,10 +166,24 @@ selector, in which case stylesheet order decides, so prefer something more speci
 | `--rf-focus-width`            | `2px`                                   | Focus ring width                             |
 | `--rf-focus-offset`           | `3px`                                   | Focus ring offset                            |
 
-Two notes. `--rf-icon-size` defaults to `16px` rather than matching `--rf-arrow-size`, because a 24px
-glyph inside a 24px circle leaves the arrow no breathing room. And the 560px threshold where the
-arrows drop below the stack is a literal in the stylesheet, not a token, because container queries
-cannot read custom properties.
+Three notes. `--rf-icon-size` defaults to `16px` rather than matching `--rf-arrow-size`, because a
+24px glyph inside a 24px circle leaves the arrow no breathing room. The 560px threshold where the
+arrows drop below the stack is a literal rather than a token, because container queries cannot read
+custom properties. And a handful of structural values are literals too, on the grounds that theming
+them is unlikely: the toggle's padding and pill radius, the arrow's invisible 44px touch target, and
+the line heights, letter spacing, and weights on the three type utilities. Override them with ordinary
+CSS if you need to.
+
+### Styling hooks
+
+Each card carries data attributes you can select on:
+
+| Attribute      | On                | Meaning                                         |
+| -------------- | ----------------- | ----------------------------------------------- |
+| `data-depth`   | every card        | Distance from the front, `0` for the front card |
+| `data-front`   | the front card    | Present only on the card at depth `0`           |
+| `data-hidden`  | cards past `peek` | Faded out and not clickable                     |
+| `data-rf-dark` | dark-faced cards  | Set by the auto-contrast pass, see below        |
 
 ### Type
 
@@ -203,7 +219,8 @@ bearing rather than cosmetic.
 - **Card text follows the card.** Because a card keeps its accent even at the front of the stack, a
   dark accent would otherwise leave unreadable text on the one card the reader is looking at. After
   each render the component measures every card's resolved background, and any face too dark for
-  `--rf-ink` gets `data-rf-dark` and switches to `--rf-ink-inverse`. The background is read back out
+  `--rf-ink` gets `data-rf-dark` and switches to `--rf-ink-inverse`. The measurement runs whenever the
+  set of accents changes, not on every render. The background is read back out
   of the DOM rather than parsed off the prop, so it works for any color syntax, including named
   colors, `hsl()`, and `oklch()`. Cards with a mostly transparent face are left on `--rf-ink`, on
   the assumption that the paper behind them is showing through. Consumer CSS can still override the

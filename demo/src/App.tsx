@@ -239,7 +239,8 @@ export function App() {
             <div>
               <h2 className="rf-title">Tab reaches one card</h2>
               <p className="rf-body">
-                Only the front card is focusable, so <a href="#tab-target">this link</a> is
+                Only the front card is focusable, so{' '}
+                <a href="https://github.com/marktoadvine/riffle#accessibility">this link</a> is
                 unreachable until its card is in front.
               </p>
             </div>
@@ -249,7 +250,9 @@ export function App() {
             <div>
               <h2 className="rf-title">Every card, live</h2>
               <p className="rf-body">
-                Unstack the deck and <a href="#tab-target">all three links</a> join the tab order.
+                Unstack the deck and{' '}
+                <a href="https://github.com/marktoadvine/riffle#accessibility">all three links</a>{' '}
+                join the tab order.
               </p>
             </div>
           </CardStack.Card>
