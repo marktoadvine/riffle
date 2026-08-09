@@ -397,21 +397,23 @@
     transition-duration: 1ms;
   }
 
+  /*
+   * Zeroing the hover variables is the whole job: the base .rf-card transform
+   * then resolves to the card's resting depth position. Setting transform:none
+   * here instead would wipe the depth transform too, collapsing the deck flat
+   * on pointer-enter, which is a far bigger movement than the one being
+   * suppressed.
+   */
   .rf-root:not([data-expanded='true']):hover .rf-card[data-front='true'],
-  .rf-root:not([data-expanded='true']):hover .rf-card:not([data-front='true']),
-  .rf-stack[data-expanded='true'] .rf-card:hover {
+  .rf-root:not([data-expanded='true']):hover .rf-card:not([data-front='true']) {
     --rf-lift-y: 0px;
     --rf-lift-scale: 1;
     --rf-fan-y: 0px;
     --rf-fan-on: 0;
-
-    transform: none;
   }
 
-  .rf-root:not([data-expanded='true']):hover .rf-card[data-front='true'] {
-    transform: translateY(calc(var(--rf-offset) * var(--rf-depth)))
-      rotate(calc(var(--rf-tilt-sign) * var(--rf-tilt)))
-      scale(calc(1 - var(--rf-scale-step) * var(--rf-depth)));
+  .rf-stack[data-expanded='true'] .rf-card:hover {
+    transform: none;
   }
 }
 
