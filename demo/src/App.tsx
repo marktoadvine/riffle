@@ -16,7 +16,7 @@ const ROYAL = '#3B5BDB';
 const neutral = [
   {
     index: '#1',
-    title: 'Front and center',
+    title: 'En avant!',
     body: 'The card in focus sits straight on. The rest wait behind it.',
     accent: WHITE,
   },
@@ -28,14 +28,14 @@ const neutral = [
   },
   {
     index: '#3',
-    title: 'Nothing buried',
+    title: 'Access the deck',
     body: 'Unstack the deck and every card is readable at once.',
     accent: MIST,
   },
   {
     index: '#4',
     title: 'Yours to theme',
-    body: 'Every value is a custom property, so the deck takes your colors.',
+    body: 'Every value is a custom property, so the deck takes your colors. C'est vraiiii.',
     accent: STONE,
   },
 ];
@@ -43,19 +43,19 @@ const neutral = [
 const themed = [
   {
     index: '#1',
-    title: 'Set an accent',
+    title: 'Set the accent',
     body: 'Each card carries one color and keeps it wherever it sits in the deck.',
     accent: MIST,
   },
   {
     index: '#2',
-    title: 'Edges do the work',
+    title: 'Edges, edges, edges',
     body: 'Two cards lean opposite ways so their color shows past the sides and the top.',
     accent: STONE,
   },
   {
     index: '#3',
-    title: 'Depth, not decoration',
+    title: 'Depth, baby!',
     body: 'The card behind those two sits square and shows along the bottom.',
     accent: ASH,
   },
@@ -68,7 +68,12 @@ const themed = [
 ];
 
 const many = [
-  { index: '#1', title: 'Nine cards', body: 'More than a stack can usefully show.', accent: WHITE },
+  {
+    index: '#1',
+    title: 'Nine cards',
+    body: 'More than a stack can usefully show.',
+    accent: WHITE
+  },
   {
     index: '#2',
     title: 'Three deep',
@@ -77,20 +82,20 @@ const many = [
   },
   {
     index: '#3',
-    title: 'The rest wait',
+    title: 'The rest are like ghosts',
     body: 'Deeper cards fade out and stop taking clicks.',
     accent: STONE,
   },
   {
     index: '#4',
     title: 'Still in the DOM',
-    body: 'Nothing is unmounted, so nothing restarts.',
+    body: 'Nothing is unmounted, friends.',
     accent: ROYAL,
   },
   {
     index: '#5',
     title: 'Unstack it',
-    body: 'The grid is the only way to see all nine.',
+    body: 'The grid is the only way to see all nine. Tu vois ce que je veux dire?',
     accent: ASH,
   },
   {
@@ -107,7 +112,7 @@ const many = [
   },
   {
     index: '#8',
-    title: 'Print it',
+    title: 'Imprimer',
     body: 'Printed pages always render the full grid.',
     accent: STONE,
   },
