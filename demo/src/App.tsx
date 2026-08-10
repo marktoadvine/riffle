@@ -35,7 +35,7 @@ const neutral = [
   {
     index: '#4',
     title: 'Yours to theme',
-    body: 'Every value is a custom property, so the deck takes your colors. C'est vraiiii.',
+    body: 'Every value is a custom property, so the deck takes your colors. En vraiiii.',
     accent: STONE,
   },
 ];
