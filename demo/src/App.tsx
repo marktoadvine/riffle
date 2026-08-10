@@ -72,7 +72,7 @@ const many = [
     index: '#1',
     title: 'Nine cards',
     body: 'More than a stack can usefully show.',
-    accent: WHITE
+    accent: WHITE,
   },
   {
     index: '#2',
