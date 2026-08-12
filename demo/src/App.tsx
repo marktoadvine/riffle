@@ -3,15 +3,11 @@ import { CardStack } from '@marktoadvine/riffle';
 
 const vars = (style: Record<string, string | number>) => style as CSSProperties;
 
-/* --------------------------------------------------------------- palette */
-
 const WHITE = '#FFFFFF';
 const MIST = '#F4F4F5';
 const STONE = '#E7E5E4';
 const ASH = '#D6D3D1';
 const ROYAL = '#3B5BDB';
-
-/* ------------------------------------------------------------------ data */
 
 const neutral = [
   {
@@ -123,8 +119,6 @@ const many = [
     accent: ROYAL,
   },
 ];
-
-/* ------------------------------------------------------------------- app */
 
 export function App() {
   const [peek, setPeek] = useState(3);

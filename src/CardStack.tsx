@@ -74,14 +74,11 @@ const faceLuminance = (color: string): number | null => {
 
 const cx = (...parts: Array<string | false | undefined>) => parts.filter(Boolean).join(' ');
 
-/* ------------------------------------------------------------------ icons */
-
 /*
  * Material Symbols glyphs, inlined so the component needs no icon font and
  * stays a single copy-pasteable file. They inherit color through
  * fill: currentColor and size through --rf-icon-size.
  */
-
 const ArrowBackIcon = () => (
   <svg className="rf-icon" viewBox="0 -960 960 960" aria-hidden="true" focusable="false">
     <path d="m313-440 224 224-57 56-320-320 320-320 57 56-224 224h487v80H313Z" />
@@ -106,8 +103,6 @@ const LayersIcon = () => (
   </svg>
 );
 
-/* ------------------------------------------------------------------- card */
-
 /**
  * One slide. `CardStack` reads these props and renders the card element
  * itself, which is what lets it manage `inert`, refs, and depth per card.
@@ -116,8 +111,6 @@ function Card({ children }: CardProps): ReactNode {
   return children;
 }
 Card.displayName = 'CardStack.Card';
-
-/* -------------------------------------------------------------- cardstack */
 
 function CardStackRoot({
   label,
@@ -160,8 +153,6 @@ function CardStackRoot({
     [],
   );
 
-  /* --------------------------------------------------------- index moves */
-
   const applyIndex = useCallback(
     (next: number) => {
       if (count === 0) return 0;
@@ -195,8 +186,6 @@ function CardStackRoot({
     if (count === 0 || !canPrev) return;
     goTo(topIndex - 1);
   }, [canPrev, count, goTo, topIndex]);
-
-  /* ---------------------------------------------------------- expansion */
 
   /**
    * Records where every card is right now, so the layout effect below can
@@ -322,8 +311,6 @@ function CardStackRoot({
     }
   }, [accentKey, readCards]);
 
-  /* ------------------------------------------------------------- input */
-
   const handleClick = useCallback(
     (event: ReactMouseEvent<HTMLDivElement>) => {
       const target = event.target as Element | null;
@@ -408,8 +395,6 @@ function CardStackRoot({
   const handlePointerCancel = useCallback(() => {
     pointerStart.current = null;
   }, []);
-
-  /* ------------------------------------------------------------- render */
 
   const controls: CardStackControls = {
     index: topIndex,
