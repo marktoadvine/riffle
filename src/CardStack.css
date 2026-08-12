@@ -1,6 +1,4 @@
 /*
- * riffle: CardStack
- *
  * Every visual value below comes from an --rf- custom property, so the whole
  * component can be rethemed without touching this file. The defaults are
  * deliberately neutral. There are no brand colors here.
@@ -97,8 +95,6 @@
   box-sizing: border-box;
 }
 
-/* ---------------------------------------------------------------- layout */
-
 .rf-viewport {
   display: grid;
   grid-template-areas: 'prev stack next';
@@ -154,8 +150,6 @@
   padding-block-start: var(--rf-arrow-row-gap);
 }
 
-/* ----------------------------------------------------------------- cards */
-
 .rf-card {
   --rf-depth: 0;
   --rf-tilt-sign: 0;
@@ -206,8 +200,6 @@
   pointer-events: none;
 }
 
-/* --------------------------------------------------------- stacked hover */
-
 .rf-root:not([data-expanded='true']):hover .rf-card[data-front='true'] {
   --rf-lift-y: var(--rf-hover-lift);
   --rf-lift-scale: var(--rf-hover-scale);
@@ -229,8 +221,6 @@
   transition-duration: var(--rf-press-duration);
   transition-timing-function: var(--rf-ease-soft);
 }
-
-/* ------------------------------------------------------------ expanded */
 
 .rf-stack[data-expanded='true'] {
   width: 100%;
@@ -255,8 +245,6 @@
   transform: translateY(var(--rf-hover-lift));
   box-shadow: var(--rf-shadow-lift);
 }
-
-/* -------------------------------------------------------------- controls */
 
 .rf-arrow {
   grid-area: prev;
@@ -333,8 +321,6 @@
   fill: currentcolor;
 }
 
-/* ----------------------------------------------------------------- type */
-
 .rf-index {
   display: block;
   font-size: var(--rf-index-size);
@@ -369,8 +355,6 @@
   text-decoration: underline;
   text-underline-offset: 0.18em;
 }
-
-/* ---------------------------------------------------------------- a11y */
 
 /*
  * Focus rings are never clipped: nothing in the component uses

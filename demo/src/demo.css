@@ -69,8 +69,6 @@ body {
   display: contents;
 }
 
-/* --------------------------------------------------------------- panel */
-
 .panel {
   display: flex;
   flex-wrap: wrap;
