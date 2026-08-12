@@ -21,7 +21,7 @@ than a registry install and pulls the build tooling with it. Pin to a tag when y
 deliberate rather than tracking whatever is on `main`:
 
 ```sh
-npm install github:marktoadvine/riffle#v0.1.0
+npm install github:marktoadvine/riffle#v0.1.1
 ```
 
 React 18 or 19 is a peer dependency. There are no runtime dependencies.
