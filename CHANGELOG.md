@@ -5,6 +5,14 @@ All notable changes to this project are documented here.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and this project
 adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.1.1] - 2026-08-11
+
+- This is a PATCH update.
+- Removed a bunch of clunk from the files, just decorative text. 39 comment lines deleted. No code deleted.
+
+[0.1.1]: https://github.com/marktoadvine/riffle/releases/tag/v0.1.1
+
+
 ## [0.1.0] - 2026-08-09
 
 First release.
